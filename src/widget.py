@@ -1,4 +1,4 @@
-import masks
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(users_data: str) -> str:
@@ -6,10 +6,10 @@ def mask_account_card(users_data: str) -> str:
     Возвращая строку с замаскированным номером."""
     if "Счет" in users_data:
         bank_number_account = users_data[-20:]
-        return users_data[:-20] + masks.get_mask_account(bank_number_account)
+        return users_data[:-20] + get_mask_account(bank_number_account)
     else:
         bank_card_number = users_data[-16:]
-        return users_data[:-16] + masks.get_mask_card_number(bank_card_number)
+        return users_data[:-16] + get_mask_card_number(bank_card_number)
 
 
 def get_date(date_and_time: str) -> str:
