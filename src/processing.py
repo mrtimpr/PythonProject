@@ -6,11 +6,10 @@ def filter_by_state(list_of_dicts: list[dict], state: str = "EXECUTED") -> list[
     содержащий только те словари, у которых ключ state
     соответствует указанному значению.
     """
-
     new_list_of_dicts = []
-    for list in list_of_dicts:
-        if list.get("state") == state:
-            new_list_of_dicts.append(list)
+    for record in list_of_dicts:
+        if record.get("state") == state:
+            new_list_of_dicts.append(record)
     return new_list_of_dicts
 
 
