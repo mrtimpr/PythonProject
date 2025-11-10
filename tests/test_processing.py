@@ -2,14 +2,16 @@ import pytest
 
 from src.processing import filter_by_state, sort_by_date
 
+from typing import Any
+
 
 def test_filter_by_state_cn(list_dict: list, list_dict_filter: list) -> None:
-    state = "CANCELED"
+    state: str = "CANCELED"
     assert filter_by_state(list_dict, state) == list_dict_filter
 
 
 def test_filter_by_state_ex(list_dict: list, list_dict_filter_ex: list) -> None:
-    state = "EXECUTED"
+    state: str = "EXECUTED"
     assert filter_by_state(list_dict, state) == list_dict_filter_ex
 
 
@@ -28,13 +30,13 @@ def test_filter_by_state_ex(list_dict: list, list_dict_filter_ex: list) -> None:
     ],
 )
 def test_filter_by_state_not_key(n: list, expected_result: list) -> None:
-    state = ""
+    state: str = ""
     assert filter_by_state(n, state) == expected_result
 
 
 @pytest.mark.parametrize("n, expected_result", [("", "Проверьте что список словарей имеет данные")])
-def test_filter_by_state_not_list(n: list, expected_result: list) -> None:
-    state = "EXECUTED"
+def test_filter_by_state_not_list(n: Any, expected_result: list) -> None:
+    state: str = "EXECUTED"
     assert filter_by_state(n, state) == expected_result
 
 
@@ -52,5 +54,5 @@ def test_sort_by_date_invert(list_dict: list, list_dict_sort_invert: list) -> No
         ("", "Проверьте что список словарей имеет данные"),
     ],
 )
-def test_sort_by_date_zero(n: list, expected_result: list) -> None:
+def test_sort_by_date_zero(n: Any, expected_result: list) -> None:
     assert sort_by_date(n) == expected_result
