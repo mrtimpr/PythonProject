@@ -1,8 +1,8 @@
+from typing import Any
+
 import pytest
 
 from src.processing import filter_by_state, sort_by_date
-
-from typing import Any
 
 
 def test_filter_by_state_cn(list_dict: list, list_dict_filter: list) -> None:
