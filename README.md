@@ -31,6 +31,12 @@ pip install -r requirements.txt
 
 - sort_by_date - принимает список словарей и необязательный параметр сортировки
 
+- filter_by_currency - принимает на вход список словарей, представляющих транзакции.
+
+- transaction_descriptions - принимает список словарей с транзакциями и возвращает описание каждой операции по очереди.
+
+- card_number_generator - принимает начальное и конечное значения для генерации диапазона номеров.
+
 ## Примеры работ функций:
 
 ### для get_mask_card_number 
@@ -95,6 +101,67 @@ Visa Gold 5999414228426353
 - Пример входных данных для проверки функции
 `[{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'}, {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}, {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'}, {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]`
 
+### для filter_by_currency:
+
+- Выход функции по фильтрации с указанием валюты "USD"
+`[{
+          "id": 939719570,
+          "state": "EXECUTED",
+          "date": "2018-06-30T02:08:58.425572",
+          "operationAmount": {
+              "amount": "9824.07",
+              "currency": {
+                  "name": "USD",
+                  "code": "USD"
+              }
+          },
+          "description": "Перевод организации",
+          "from": "Счет 75106830613657916952",
+          "to": "Счет 11776614605963066702"
+      }
+      {
+              "id": 142264268,
+              "state": "EXECUTED",
+              "date": "2019-04-04T23:20:05.206878",
+              "operationAmount": {
+                  "amount": "79114.93",
+                  "currency": {
+                      "name": "USD",
+                      "code": "USD"
+                  }
+              },
+              "description": "Перевод со счета на счет",
+              "from": "Счет 19708645243227258542",
+              "to": "Счет 75651667383060284188"
+       }]`
+
+- Пример входных данных для проверки функции
+`[{"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572", "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод организации", "from": "Счет 75106830613657916952", "to": "Счет 11776614605963066702"}, {"id": 142264268, "state": "EXECUTED", "date": "2019-04-04T23:20:05.206878", "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод со счета на счет", "from": "Счет 19708645243227258542", "to": "Счет 75651667383060284188"}, {"id": 873106923, "state": "EXECUTED", "date": "2019-03-23T01:09:46.296404", "operationAmount": {"amount": "43318.34", "currency": {"name": "руб.", "code": "RUB"}}, "description": "Перевод со счета на счет", "from": "Счет 44812258784861134719", "to": "Счет 74489636417521191160"}, {"id": 895315941, "state": "EXECUTED", "date": "2018-08-19T04:27:37.904916", "operationAmount": {"amount": "56883.54", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод с карты на карту", "from": "Visa Classic 6831982476737658", "to": "Visa Platinum 8990922113665229"}, { "id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689", "operationAmount": {"amount": "67314.70", "currency": {"name": "руб.", "code": "RUB"}}, "description": "Перевод организации", "from": "Visa Platinum 1246377376343588", "to": "Счет 14211924144426031657"}]`
+
+### для transaction_descriptions:
+
+- Выход функции по выводу описаний каждой операции по очереди
+```
+Перевод организации
+Перевод со счета на счет
+Перевод со счета на счет
+Перевод с карты на карту
+Перевод организации
+```
+- Пример входных данных для проверки функции
+`[{"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572", "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод организации", "from": "Счет 75106830613657916952", "to": "Счет 11776614605963066702"}, {"id": 142264268, "state": "EXECUTED", "date": "2019-04-04T23:20:05.206878", "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод со счета на счет", "from": "Счет 19708645243227258542", "to": "Счет 75651667383060284188"}, {"id": 873106923, "state": "EXECUTED", "date": "2019-03-23T01:09:46.296404", "operationAmount": {"amount": "43318.34", "currency": {"name": "руб.", "code": "RUB"}}, "description": "Перевод со счета на счет", "from": "Счет 44812258784861134719", "to": "Счет 74489636417521191160"}, {"id": 895315941, "state": "EXECUTED", "date": "2018-08-19T04:27:37.904916", "operationAmount": {"amount": "56883.54", "currency": {"name": "USD", "code": "USD"}}, "description": "Перевод с карты на карту", "from": "Visa Classic 6831982476737658", "to": "Visa Platinum 8990922113665229"}, { "id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689", "operationAmount": {"amount": "67314.70", "currency": {"name": "руб.", "code": "RUB"}}, "description": "Перевод организации", "from": "Visa Platinum 1246377376343588", "to": "Счет 14211924144426031657"}]`
+
+### для card_number_generator:
+
+- Выход функции с указанием диапазона генерации карт (1, 5):
+```
+0000 0000 0000 0001
+0000 0000 0000 0002
+0000 0000 0000 0003
+0000 0000 0000 0004
+0000 0000 0000 0005
+```
+
 ## Тестирование
 
 ### Краткое описание
@@ -109,7 +176,7 @@ Visa Gold 5999414228426353
 
 #### Запуск конкретного файла с тестами:
 Перейдите в корневую директорию проекта. Выполните команду, указав путь к файлу:
-`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py`
+`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py` or `pytest tests/test_generators.py`
 
 #### Просмотр более подробной информации:
 Для получения более детальной информации о выполнении тестов (например, о длительности выполнения) используйте флаг -v:
@@ -142,6 +209,15 @@ tests/test_widget.py ........                               [100%]
 collected 7 items
 tests/test_processing.py .......                               [100%]
 ===== 7 passed in ...s =====
+```
+
+#### Пример запуска и вывода tests/test_generators.py:
+
+```
+===== test session starts =====
+collected 10 items
+tests/test_processing.py .......                               [100%]
+===== 10 passed in ...s =====
 ```
 
 ## Лицензия:
