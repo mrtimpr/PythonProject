@@ -37,6 +37,8 @@ pip install -r requirements.txt
 
 - card_number_generator - принимает начальное и конечное значения для генерации диапазона номеров.
 
+- log - Декоратор, логирующий начало и конец выполнения функции, результаты или ошибки в файл или консоль.
+
 ## Примеры работ функций:
 
 ### для get_mask_card_number 
@@ -162,6 +164,28 @@ Visa Gold 5999414228426353
 0000 0000 0000 0005
 ```
 
+### для декоратора log:
+
+Пример использования декоратора
+
+```
+@log(filename="mylog.txt")
+def my_function(x, y):
+    return x + y
+
+my_function(1, 2)
+```
+
+Ожидаемый вывод в лог-файл mylog.txt при успешном выполнении:
+
+`my_function ok`
+
+Ожидаемый вывод при ошибке:
+
+`my_function error: тип ошибки. Inputs: (1, 2), {}`
+
+Где тип ошибки заменяется на текст ошибки.
+
 ## Тестирование
 
 ### Краткое описание
@@ -176,7 +200,7 @@ Visa Gold 5999414228426353
 
 #### Запуск конкретного файла с тестами:
 Перейдите в корневую директорию проекта. Выполните команду, указав путь к файлу:
-`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py` or `pytest tests/test_generators.py`
+`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py` or `pytest tests/test_generators.py` or `pytest tests/test_decorators.py`
 
 #### Просмотр более подробной информации:
 Для получения более детальной информации о выполнении тестов (например, о длительности выполнения) используйте флаг -v:
@@ -218,6 +242,15 @@ tests/test_processing.py .......                               [100%]
 collected 10 items
 tests/test_processing.py .......                               [100%]
 ===== 10 passed in ...s =====
+```
+
+#### Пример запуска и вывода tests/test_decorators.py:
+
+```
+===== test session starts =====
+collected 4 items
+tests/test_decorators.py .......                               [100%]
+===== 4 passed in ...s =====
 ```
 
 ## Лицензия:
