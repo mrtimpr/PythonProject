@@ -332,9 +332,9 @@ tests/test_decorators.py .......                               [100%]
 
 ```
 ===== test session starts =====
-collected 6 items
+collected 7 items
 tests/test_utils.py ........                               [100%]
-===== 6 passed in ...s =====
+===== 7 passed in ...s =====
 ```
 
 #### Пример запуска и вывода tests/test_external_api.py:
