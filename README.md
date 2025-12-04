@@ -37,6 +37,12 @@ pip install -r requirements.txt
 
 - card_number_generator - принимает начальное и конечное значения для генерации диапазона номеров.
 
+- log - Декоратор, логирующий начало и конец выполнения функции, результаты или ошибки в файл или консоль.
+
+- load_transaction_data - принимает на вход путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях
+
+- convert_to_rub - принимает на вход транзакцию и возвращает сумму транзакции (amount) в рублях, тип данных — float. Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения текущего курса валют и конвертации суммы операции в рубли
+
 ## Примеры работ функций:
 
 ### для get_mask_card_number 
@@ -162,6 +168,99 @@ Visa Gold 5999414228426353
 0000 0000 0000 0005
 ```
 
+### для декоратора log:
+
+Пример использования декоратора
+
+```
+@log(filename="mylog.txt")
+def my_function(x, y):
+    return x + y
+
+my_function(1, 2)
+```
+
+Ожидаемый вывод в лог-файл mylog.txt при успешном выполнении:
+
+`my_function ok`
+
+Ожидаемый вывод при ошибке:
+
+`my_function error: тип ошибки. Inputs: (1, 2), {}`
+
+Где тип ошибки заменяется на текст ошибки.
+
+### для load_transaction_data:
+
+Пример файла transactions.json:
+```
+[
+  {
+    "operationAmount": {
+      "amount": "100.50",
+      "currency": {
+        "code": "RUB"
+      }
+    }
+  },
+  {
+    "operationAmount": {
+      "amount": "25.00",
+      "currency": {
+        "code": "USD"
+      }
+    }
+  }
+]
+```
+
+Ожидаемый вывод при выполнении кода:
+```
+Успешно загружено 2 транзакций.
+Транзакция 1: 100.50 RUB
+Транзакция 2: 25.00 USD
+```
+
+### для convert_to_rub:
+
+```
+# Пример транзакции в долларах
+transaction_usd = {
+    "operationAmount": {
+        "amount": "100.50",
+        "currency": {"code": "USD"}
+    }
+}
+
+# Пример транзакции в рублях (конвертация не требуется)
+transaction_rub = {
+    "operationAmount": {
+        "amount": "5000.00",
+        "currency": {"code": "RUB"}
+    }
+}
+
+# Используем функцию
+amount_rub_usd = convert_to_rub(transaction_usd)
+amount_rub_rub = convert_to_rub(transaction_rub)
+amount_rub_bad = convert_to_rub({"bad": "data"}) # Пример с ошибкой
+
+print(f"100.50 USD в RUB: {amount_rub_usd:.2f} RUB")
+print(f"5000.00 RUB в RUB: {amount_rub_rub:.2f} RUB")
+print(f"Результат для неверных данных: {amount_rub_bad}")
+```
+
+Ожидаемый вывод при выполнении кода:
+
+#### (Точные значения курса могут меняться со временем)
+
+```
+100.50 USD в RUB: 9346.50 RUB
+5000.00 RUB в RUB: 5000.00 RUB
+Ошибка обработки входных данных: 'operationAmount'
+Результат для неверных данных: 0.0
+```
+
 ## Тестирование
 
 ### Краткое описание
@@ -176,7 +275,7 @@ Visa Gold 5999414228426353
 
 #### Запуск конкретного файла с тестами:
 Перейдите в корневую директорию проекта. Выполните команду, указав путь к файлу:
-`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py` or `pytest tests/test_generators.py`
+`pytest tests/test_masks.py` or `pytest tests/test_widget.py` or `pytest tests/test_processing.py` or `pytest tests/test_generators.py` or `pytest tests/test_decorators.py`
 
 #### Просмотр более подробной информации:
 Для получения более детальной информации о выполнении тестов (например, о длительности выполнения) используйте флаг -v:
@@ -220,6 +319,32 @@ tests/test_processing.py .......                               [100%]
 ===== 10 passed in ...s =====
 ```
 
+#### Пример запуска и вывода tests/test_decorators.py:
+
+```
+===== test session starts =====
+collected 4 items
+tests/test_decorators.py .......                               [100%]
+===== 4 passed in ...s =====
+```
+
+#### Пример запуска и вывода tests/test_utils.py:
+
+```
+===== test session starts =====
+collected 7 items
+tests/test_utils.py ........                               [100%]
+===== 7 passed in ...s =====
+```
+
+#### Пример запуска и вывода tests/test_external_api.py:
+
+```
+===== test session starts =====
+collected 9 items
+tests/test_external_api.py ........                               [100%]
+===== 9 passed in ...s =====
+```
 ## Лицензия:
 
 Этот проект лицензирован по [лицензии MIT](LICENSE).

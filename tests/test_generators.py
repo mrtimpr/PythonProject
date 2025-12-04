@@ -42,7 +42,7 @@ def test_no_matching_currency(transactions: List[Dict[str, Any]]) -> None:
 def test_invalid_input_type() -> None:
     """Проверка обработки некорректного типа входных данных (не список)."""
     with pytest.raises(TypeError, match="Ожидается список транзакций"):
-        list(filter_by_currency("это не список", "USD")) # type: ignore[arg-type]
+        list(filter_by_currency("это не список", "USD"))  # type: ignore[arg-type]
 
 
 """Тесты по функции transaction_descriptions"""
@@ -51,7 +51,7 @@ def test_invalid_input_type() -> None:
 def test_invalid_input_transaction_descriptions() -> None:
     """Проверка обработки некорректного типа входных данных (не список)."""
     with pytest.raises(TypeError, match="Ожидается список транзакций в качестве входных данных"):
-        list(transaction_descriptions("это не список")) # type: ignore[arg-type]
+        list(transaction_descriptions("это не список"))  # type: ignore[arg-type]
 
 
 def test_transaction_descriptions(transactions: List[Dict[str, Any]]) -> None:
@@ -80,7 +80,7 @@ def test_card_number_generator(start_meaning: int, end_meaning: int, expected_re
 def test_not_integers_card_number_generator() -> None:
     """Проверка обработки некорректного типа входных данных (не целые числа)."""
     with pytest.raises(TypeError, match="Начальное и конечное значения должны быть целыми числами."):
-        list(card_number_generator("1", "1")) # type: ignore[arg-type]
+        list(card_number_generator("1", "1"))  # type: ignore[arg-type]
 
 
 def test_invalid_input_card_number_generator() -> None:
