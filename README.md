@@ -261,6 +261,80 @@ print(f"Результат для неверных данных: {amount_rub_bad
 Результат для неверных данных: 0.0
 ```
 
+### для read_transactions_csv:
+
+Предположим, у нас есть файл transactions.csv с таким содержимым:
+csv
+```
+transaction_id,date,amount,description
+1,2023-10-01,500.0,Groceries
+2,2023-10-02,1200.5,Salary
+3,2023-10-03,80.0,Coffee
+```
+Мы можем прочитать его, используя функцию read_transactions_csv
+```
+import src.transactions_reader as tr
+
+file_path = "transactions.csv"
+
+try:
+    transactions_list = tr.read_transactions_csv(file_path)
+    for transaction in transactions_list:
+        print(f"ID: {transaction['transaction_id']}, Date: {transaction['date']}, Amount: {transaction['amount']}")
+
+except FileNotFoundError:
+    print(f"Ошибка: файл не найден по пути {file_path}")
+except ValueError as e:
+    print(f"Ошибка валидации данных: {e}")
+```
+
+Ожидаемый вывод при выполнении кода:
+
+```
+ID: 1, Date: 2023-10-01 00:00:00, Amount: 500.0
+ID: 2, Date: 2023-10-02 00:00:00, Amount: 1200.5
+ID: 3, Date: 2023-10-03 00:00:00, Amount: 80.0
+```
+
+### для read_transactions_csv:
+
+Мы можем читать файлы Excel (.xlsx) и передавать дополнительные аргументы в базовую функцию Pandas (pd.read_excel), например, чтобы указать имя листа или дополнительные параметры парсинга.
+```
+transaction_id,date,amount,description
+1,2023-10-01,500.0,Groceries
+2,2023-10-02,1200.5,Salary
+3,2023-10-03,80.0,Coffee
+```
+Мы можем прочитать его, используя функцию read_transactions_xlcx
+```
+import src.transactions_reader as tr
+from pathlib import Path
+
+# Пример чтения файла Excel, расположенного по пути Path
+path_obj = Path("data_folder/my_transactions.xlsx")
+
+try:
+    # Указываем имя листа и опциональный параметр engine для pd.read_excel
+    excel_data = tr.read_transactions_xlsx(
+        path_obj, 
+        sheet_name="October Data", 
+        engine="openpyxl"
+    )
+    
+    print(f"Успешно прочитано {len(excel_data)} транзакций из Excel.")
+
+except Exception as e:
+    print(f"Произошла ошибка при чтении Excel файла: {e}")
+```
+
+Ожидаемый вывод при выполнении кода:
+
+```
+ID: 1, Date: 2023-10-01 00:00:00, Amount: 500.0
+ID: 2, Date: 2023-10-02 00:00:00, Amount: 1200.5
+ID: 3, Date: 2023-10-03 00:00:00, Amount: 80.0
+```
+
 ## Тестирование
 
 ### Краткое описание
@@ -344,6 +418,15 @@ tests/test_utils.py ........                               [100%]
 collected 9 items
 tests/test_external_api.py ........                               [100%]
 ===== 9 passed in ...s =====
+```
+
+#### Пример запуска и вывода tests/test_transactions_reader.py:
+
+```
+===== test session starts =====
+collected 6 items
+tests/test_external_api.py ........                               [100%]
+===== 6 passed in ...s =====
 ```
 ## Лицензия:
 
