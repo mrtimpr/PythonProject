@@ -1,8 +1,11 @@
+from typing import Any, Dict, List
+
 import pytest
 
 
 @pytest.fixture
-def list_dict() -> list[dict]:
+def list_dict() -> List[Dict[str, Any]]:
+    # Основной список данных
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
@@ -12,7 +15,8 @@ def list_dict() -> list[dict]:
 
 
 @pytest.fixture
-def list_dict_filter() -> list[dict]:
+def list_dict_filter() -> List[Dict[str, Any]]:
+    # Ожидаемый результат для CANCELED
     return [
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
         {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
@@ -20,7 +24,8 @@ def list_dict_filter() -> list[dict]:
 
 
 @pytest.fixture
-def list_dict_filter_ex() -> list[dict]:
+def list_dict_filter_ex() -> List[Dict[str, Any]]:
+    # Ожидаемый результат для EXECUTED
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
@@ -28,7 +33,8 @@ def list_dict_filter_ex() -> list[dict]:
 
 
 @pytest.fixture
-def list_dict_sort() -> list[dict]:
+def list_dict_sort() -> List[Dict[str, Any]]:
+    # Ожидаемый результат сортировки по убыванию (по умолчанию)
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
@@ -38,7 +44,8 @@ def list_dict_sort() -> list[dict]:
 
 
 @pytest.fixture
-def list_dict_sort_invert() -> list[dict]:
+def list_dict_sort_invert() -> List[Dict[str, Any]]:
+    # Ожидаемый результат сортировки по возрастанию (sort_parameter=False)
     return [
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},

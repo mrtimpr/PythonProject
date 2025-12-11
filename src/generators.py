@@ -4,15 +4,24 @@ from typing import Any, Dict, Iterator, List
 def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Iterator[Dict[str, Any]]:
     """
     Фильтрует список транзакций по указанному коду валюты.
+    Поддерживает оба формата:
+    - JSON (operationAmount.currency.code) (ранее поддерживал только его)
+    - CSV/XLSX (currency_code)
     """
     if not isinstance(transactions, list):
         raise TypeError("Ожидается список транзакций в качестве входных данных")
 
     for record in transactions:
         try:
-            transaction_currency_code = record.get("operationAmount", {}).get("currency", {}).get("code")
-            if transaction_currency_code == currency:
+            # JSON-структура
+            code_json = record.get("operationAmount", {}).get("currency", {}).get("code")
+
+            # CSV/XLSX-структура
+            code_csv = record.get("currency_code")
+
+            if code_json == currency or code_csv == currency:
                 yield record
+
         except AttributeError:
             print(f"Предупреждение: Некорректный формат записи транзакции: {record}")
             continue

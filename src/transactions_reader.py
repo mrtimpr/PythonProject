@@ -5,7 +5,7 @@ import pandas as pd
 
 Transaction = Dict[str, Any]
 
-REQUIRED_COLUMNS: Set[str] = {"transaction_id", "date", "amount"}
+REQUIRED_COLUMNS: Set[str] = {"id", "date", "amount"}
 
 
 def _validate_df(df: pd.DataFrame, required: Iterable[str]) -> None:
@@ -26,7 +26,7 @@ def read_transactions_csv(
     else:
         cols_to_check = required_columns
 
-    df: pd.DataFrame = pd.read_csv(path, parse_dates=["date"], **kwargs)
+    df: pd.DataFrame = pd.read_csv(path, parse_dates=["date"], sep=";", **kwargs)
     _validate_df(df, cols_to_check)
 
     raw_list_of_dicts = df.to_dict(orient="records")

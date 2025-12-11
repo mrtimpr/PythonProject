@@ -1,10 +1,11 @@
 import re
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 
 def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[str, Any]]:
     """
-    Возвращает список словарей из data, у которых в поле 'description' встречается search (как подстрока, case-insensitive).
-    Если search пустая строка -> возвращается пустой список.
+    Возвращает список словарей из data, у которых в поле 'description' встречается search (как подстрока,
+    case-insensitive). Если search пустая строка -> возвращается пустой список.
     """
     if not search:
         return []
@@ -12,7 +13,7 @@ def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[st
     pattern = re.compile(re.escape(search), re.IGNORECASE)
     result: List[Dict[str, Any]] = []
     for item in data:
-        desc = item.get('description', '')
+        desc = item.get("description", "")
         if isinstance(desc, str) and pattern.search(desc):
             result.append(item)
     return result
@@ -28,7 +29,7 @@ def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -
     patterns = {cat: re.compile(re.escape(cat), re.IGNORECASE) for cat in categories}
 
     for item in data:
-        desc = item.get('description', '')
+        desc = item.get("description", "")
         if not isinstance(desc, str):
             continue
         for cat, pat in patterns.items():
