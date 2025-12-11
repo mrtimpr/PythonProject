@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from typing import Any, Dict, List
 
 
@@ -22,9 +23,10 @@ def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[st
 def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -> Dict[str, int]:
     """
     Возвращает словарь {категория: количество}, где для каждой категории считается,
-    сколько операций в data имеют эту категорию как подстроку в поле 'description' (case-insensitive).
+    сколько операций в data имеют эту категорию как подстроку в поле 'description' (case-insensitive),
+    используя collections.Counter.
     """
-    counts: Dict[str, int] = {cat: 0 for cat in categories}
+    counts = Counter({cat: 0 for cat in categories})
 
     patterns = {cat: re.compile(re.escape(cat), re.IGNORECASE) for cat in categories}
 
@@ -36,4 +38,4 @@ def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -
             if pat.search(desc):
                 counts[cat] += 1
 
-    return counts
+    return dict(counts)

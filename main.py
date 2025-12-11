@@ -6,7 +6,7 @@ from src.generators import filter_by_currency
 from src.processing import filter_by_state, sort_by_date
 from src.transactions_reader import read_transactions_csv, read_transactions_xlsx
 from src.utils import load_transaction_data
-from src.utils_for_data import process_bank_search
+from src.utils_for_data import process_bank_operations, process_bank_search
 from src.widget import get_date, mask_account_card
 
 DATA_DIR = Path("data")
@@ -141,10 +141,20 @@ def display_results(transactions: TransactionsList) -> None:
 
     print(f"Всего банковских операций в выборке: {len(transactions)}\n")
 
+    categories = list(
+        {tx.get("description", "").strip() for tx in transactions if isinstance(tx.get("description", ""), str)}
+    )
+
+    stats = process_bank_operations(transactions, categories)
+
+    for cat, count in stats.items():
+        print(f" - {cat}: {count}")
+    print()
+
     for tx in transactions:
         date = get_date(tx.get("date", ""))
         description = tx.get("description", "Описание отсутствует")
-        from_masked = mask_account_card(tx.get("from_"))
+        from_masked = mask_account_card(tx.get("from"))
         to_masked = mask_account_card(tx.get("to"))
 
         amount: str | Literal["Неизвестно"] = "Неизвестно"
@@ -166,7 +176,7 @@ def display_results(transactions: TransactionsList) -> None:
         if from_masked and to_masked:
             print(f"{from_masked} -> {to_masked}")
         elif to_masked:
-            print(f"-> {to_masked}")
+            print(to_masked)
 
         print(f"Сумма: {amount} {currency}\n")
 

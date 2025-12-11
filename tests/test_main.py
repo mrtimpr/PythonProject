@@ -74,7 +74,7 @@ def test_display_results_with_various_transactions(capsys) -> None:
     tx1: Transaction = {
         "date": "2020-01-01",
         "description": "Описание 1",
-        "from_": "account_from_1",
+        "from": "account_from_1",
         "to": "account_to_1",
         "operationAmount": {"amount": "100.00", "currency": {"name": "RUB"}},
     }
@@ -94,13 +94,22 @@ def test_display_results_with_various_transactions(capsys) -> None:
         display_results(transactions)
         out = capsys.readouterr().out
 
+        # Базовая часть вывода
         assert "Распечатываю итоговый список транзакций" in out
         assert "Всего банковских операций в выборке: 2" in out
+
+        # Новая встроенная статистика категорий
+        assert "Описание 1: 1" in out
+        assert "Описание 2: 1" in out
+
+        # Проверка вывода транзакций
         assert "DATE[2020-01-01] Описание 1" in out
         assert "MASK[account_from_1] -> MASK[account_to_1]" in out
         assert "Сумма: 100.00 RUB" in out
+
         assert "DATE[2020-02-02] Описание 2" in out
-        assert "-> MASK[account_to_2]" in out
+        assert "MASK[account_to_2]" in out
+        assert "-> MASK[account_to_2]" not in out
         assert "Сумма: 50.5 USD" in out
 
 
